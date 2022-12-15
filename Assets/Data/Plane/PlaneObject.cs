@@ -22,6 +22,12 @@ namespace Data.Plane
         public string ToAirport {  
             get => this.toAirport;
             set => this.toAirport = value;
+        }        
+        
+        [SerializeField] private DateTime arriveTime;
+        public DateTime ArriveTime {  
+            get => this.arriveTime;
+            set => this.arriveTime = value;
         }
     }
 }

@@ -1,8 +1,12 @@
-﻿using Data.Plane;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Data.Plane;
 using UnityEngine;
 using System.IO;
 using System.Text;
 using Data.Buildings;
+using Object = System.Object;
 
 namespace Runtime.Utilities
 {
@@ -45,6 +49,16 @@ namespace Runtime.Utilities
             
             fileStream.Write(Encoding.UTF8.GetBytes(json));
             fileStream.Close();
+        }
+
+        public static PlaneObject DeserializePlaneObject(string json)
+        {
+            return JsonUtility.FromJson<PlaneObject>(json);
+        }        
+        
+        public static BuildingObject DeserializeBuildingObject(string json)
+        {
+            return JsonUtility.FromJson<BuildingObject>(json);
         }
     }
 }
