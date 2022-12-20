@@ -12,6 +12,10 @@ namespace Runtime
             {
                 PanelManager.Instance.SwitchPanelActivity(component);
             }
+            else if(PanelManager.Instance.AnyActivePanel())
+            {
+                PanelManager.Instance.DeactivatePanel();
+            }
         }
     }
 }

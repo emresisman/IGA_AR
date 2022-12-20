@@ -54,7 +54,7 @@ namespace Runtime.Utilities
         public static PlaneObject DeserializePlaneObject(string json)
         {
             return JsonUtility.FromJson<PlaneObject>(json);
-        }        
+        }
         
         public static BuildingObject DeserializeBuildingObject(string json)
         {
