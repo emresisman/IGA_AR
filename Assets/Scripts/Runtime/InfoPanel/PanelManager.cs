@@ -39,25 +39,29 @@ namespace Runtime.InfoPanel
             Debug.Log(panel.name);
             if (GetAnimationBool())
             {
-                if (activePanel == panel)
+                if (activePanel == panel) //Close panel
                 {
                     SetAnimationBool(false);
+                    ClearOutline(activePanel.gameObject);
                     activePanel.isActive = false;
                     activePanel = null;
                 }
-                else
+                else //Switch panel
                 {
                     SetActive(panel.MyPanel);
+                    ClearOutline(activePanel.gameObject);
                     activePanel.isActive = false;
                     activePanel = panel;
+                    AddOutline(activePanel.gameObject);
                     activePanel.isActive = true;
                 }
             }
-            else
+            else //New panel
             {
                 SetActive(panel.MyPanel);
                 SetAnimationBool(true);
                 activePanel = panel;
+                AddOutline(activePanel.gameObject);
                 activePanel.isActive = true;
             }
         }
@@ -92,6 +96,19 @@ namespace Runtime.InfoPanel
             allPanels.Add(turkishCargoPanel);
             allPanels.Add(terminalPanel);
             allPanels.Add(planePanel);
+        }
+
+        private void AddOutline(GameObject obj)
+        {
+            var outline = obj.AddComponent<Outline>();
+            outline.OutlineMode = Outline.Mode.OutlineAll;
+            outline.OutlineWidth = 7f;
+            outline.OutlineColor= Color.yellow;
+        }
+
+        private void ClearOutline(GameObject obj)
+        {
+            Destroy(obj.GetComponent<Outline>());
         }
     }
 }
