@@ -5,7 +5,7 @@ namespace Runtime.InfoPanel
 {
     public class PanelManager : Singleton<PanelManager>
     {
-        [SerializeField] private Camera camera;
+        [SerializeField] private Camera mainCamera;
         [SerializeField] protected Animator infoPanelAnimator;
         [SerializeField] private GameObject turkishTechnicPanel;
         [SerializeField] private GameObject turkishCargoPanel;
@@ -39,7 +39,7 @@ namespace Runtime.InfoPanel
 
         private InformationPanel GetRaycastHitFromScreen(Vector2 screenPosition, LayerMask layerMask)
         {
-            var ray = camera.ScreenPointToRay(screenPosition);
+            var ray = mainCamera.ScreenPointToRay(screenPosition);
             if (Physics.Raycast(ray: ray, hitInfo: out var hit, maxDistance: 50f, layerMask: layerMask))
             {
                 hit.transform.TryGetComponent<InformationPanel>(out var component);
