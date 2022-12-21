@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Data.Plane
 {
     [Serializable]
-    public class RealTimeFlightObject
+    public class AirLabsAPIObject
     {
         [SerializeField] private RealTimeFlightResponse[] response;
         public RealTimeFlightResponse[] Response
