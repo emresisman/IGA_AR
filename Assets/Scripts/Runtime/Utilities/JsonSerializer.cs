@@ -14,7 +14,7 @@ namespace Runtime.Utilities
     {
         public static void CreatePlaneJson()
         {
-            var defaultObject = new PlaneObject
+            /*var defaultObject = new PlaneObject
             {
                 CallSign = "TK253",
                 FromAirport = "TRX",
@@ -29,12 +29,12 @@ namespace Runtime.Utilities
                 FileShare.None);
             
             fileStream.Write(Encoding.UTF8.GetBytes(json));
-            fileStream.Close();
+            fileStream.Close();*/
         }
         
         public static void CreateBuildingJson()
         {
-            var defaultObject = new BuildingObject()
+            /*var defaultObject = new BuildingObject()
             {
                 Header = "Default Header",
                 Description = "Default description..."
@@ -48,7 +48,7 @@ namespace Runtime.Utilities
                 FileShare.None);
             
             fileStream.Write(Encoding.UTF8.GetBytes(json));
-            fileStream.Close();
+            fileStream.Close();*/
         }
 
         public static AirLabsAPIObject DeserializePlaneResponse(string json)
