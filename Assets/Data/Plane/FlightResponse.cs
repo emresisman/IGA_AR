@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Data.Plane
 {
     [Serializable]
-    public class PlaneObject
+    public class FlightResponse
     {
         [SerializeField] private string flight_iata;
         public string Flight_Iata {  
