@@ -177,7 +177,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPanel: {fileID: 525495788}
-  isActive: 0
 --- !u!114 &42449582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,6 +421,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Planev1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 744e01d3d39888e4bb092f1d04f82869,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 744e01d3d39888e4bb092f1d04f82869, type: 3}
@@ -1741,6 +1745,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TurkishCargo
       objectReference: {fileID: 0}
+    - target: {fileID: 2256367014876272730, guid: 53b3aacc7e32f80458257c3a0ccec96f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2398091715990833108, guid: 53b3aacc7e32f80458257c3a0ccec96f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2361,6 +2370,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ba2dd7a0c1f3c3a49bc08d451edfd652, type: 2}
+    - target: {fileID: 8319171979093454658, guid: 53b3aacc7e32f80458257c3a0ccec96f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8415409922658766348, guid: 53b3aacc7e32f80458257c3a0ccec96f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2643,6 +2657,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planev1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 744e01d3d39888e4bb092f1d04f82869,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 744e01d3d39888e4bb092f1d04f82869, type: 3}
 --- !u!4 &194854753 stripped
@@ -2905,6 +2924,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Planev1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 744e01d3d39888e4bb092f1d04f82869,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 744e01d3d39888e4bb092f1d04f82869, type: 3}
@@ -3347,6 +3371,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planev2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2e292e8b73b6b9f47bcac5e4e2c57eed,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e292e8b73b6b9f47bcac5e4e2c57eed, type: 3}
 --- !u!4 &345004480 stripped
@@ -3631,7 +3660,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPanel: {fileID: 1079521649}
-  isActive: 0
 --- !u!114 &418821877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4051,7 +4079,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPanel: {fileID: 1079521649}
-  isActive: 0
 --- !u!114 &520372992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4182,7 +4209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPanel: {fileID: 305605929}
-  isActive: 0
 --- !u!114 &528146035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4448,11 +4474,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7e4bc4105c458c8b9fa674b0fbba27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera: {fileID: 330585545}
   infoPanelAnimator: {fileID: 1876333384}
   turkishTechnicPanel: {fileID: 305605929}
   turkishCargoPanel: {fileID: 1504107647}
   terminalPanel: {fileID: 525495788}
   planePanel: {fileID: 1079521649}
+  interactableMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &665976758
 GameObject:
   m_ObjectHideFlags: 0
@@ -6538,7 +6568,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPanel: {fileID: 1079521649}
-  isActive: 0
 --- !u!114 &1255437848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6794,7 +6823,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPanel: {fileID: 1504107647}
-  isActive: 0
 --- !u!114 &1422016735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7612,6 +7640,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: iga
       objectReference: {fileID: 0}
+    - target: {fileID: 1442520643284411076, guid: 44f19974c645f98418298d2a2aa143f7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1519795212064745864, guid: 44f19974c645f98418298d2a2aa143f7,
         type: 3}
       propertyPath: m_LocalScale.z
@@ -7850,7 +7883,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPanel: {fileID: 1079521649}
-  isActive: 0
 --- !u!114 &1862483579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8496,6 +8528,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planev3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fd91ce56340022c4aa29e8e9c633331d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd91ce56340022c4aa29e8e9c633331d, type: 3}
 --- !u!4 &1982905260 stripped
@@ -8517,7 +8554,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPanel: {fileID: 1079521649}
-  isActive: 0
 --- !u!114 &1982905264
 MonoBehaviour:
   m_ObjectHideFlags: 0

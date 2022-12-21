@@ -4,18 +4,22 @@ using UnityEngine.EventSystems;
 
 namespace Runtime
 {
-    public class Interactable : MonoBehaviour, IPointerDownHandler
+    public class Interactable : MonoBehaviour, IPointerDownHandler, IDeselectHandler
     {
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (TryGetComponent<InformationPanel>(out var component))
+            /*if (TryGetComponent<InformationPanel>(out var component))
             {
                 PanelManager.Instance.SwitchPanelActivity(component);
-            }
-            else if(PanelManager.Instance.AnyActivePanel())
+            }*/
+        }
+
+        public void OnDeselect(BaseEventData eventData)
+        {
+            /*if (TryGetComponent<InformationPanel>(out var component))
             {
-                PanelManager.Instance.DeactivatePanel();
-            }
+                PanelManager.Instance.DeselectedPanel(component);
+            }*/
         }
     }
 }

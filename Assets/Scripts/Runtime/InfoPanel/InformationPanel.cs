@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace Runtime.InfoPanel
 {
@@ -6,12 +8,5 @@ namespace Runtime.InfoPanel
     {
         [SerializeField] private GameObject myPanel;
         public GameObject MyPanel => this.myPanel;
-
-        public bool isActive = false;
-        
-        public void SetText()
-        {
-            
-        }
     }
 }
