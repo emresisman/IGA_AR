@@ -4427,6 +4427,7 @@ GameObject:
   - component: {fileID: 581113699}
   - component: {fileID: 581113698}
   - component: {fileID: 581113700}
+  - component: {fileID: 581113701}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -4474,7 +4475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7e4bc4105c458c8b9fa674b0fbba27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 330585545}
+  mainCamera: {fileID: 0}
   infoPanelAnimator: {fileID: 1876333384}
   turkishTechnicPanel: {fileID: 305605929}
   turkishCargoPanel: {fileID: 1504107647}
@@ -4483,6 +4484,18 @@ MonoBehaviour:
   interactableMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &581113701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581113697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f14f6157ea489383bd980bc1a48b78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &665976758
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using Data.Plane;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -29,7 +30,8 @@ namespace Runtime.Utilities
                     break;
                 case UnityWebRequest.Result.Success:
                     var data = JsonSerializer.DeserializePlaneResponse(webRequest.downloadHandler.text);
-                    Debug.Log(data.Response[0].Flight_Iata);
+                    var min = data.Response.Min(entry=> entry.Alt);
+                    Debug.Log(data.Response.Find(entry=> entry.Alt == min).Flight_Iata);
                     break;
             }
         }

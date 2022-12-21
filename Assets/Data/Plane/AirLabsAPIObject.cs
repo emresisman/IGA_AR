@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Data.Plane
@@ -6,8 +7,8 @@ namespace Data.Plane
     [Serializable]
     public class AirLabsAPIObject
     {
-        [SerializeField] private RealTimeFlightResponse[] response;
-        public RealTimeFlightResponse[] Response
+        [SerializeField] private List<RealTimeFlightResponse> response;
+        public List<RealTimeFlightResponse> Response
         {
             get => this.response;
             set => this.response = value;
