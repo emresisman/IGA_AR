@@ -51,9 +51,9 @@ namespace Runtime.Utilities
             fileStream.Close();
         }
 
-        public static PlaneObject DeserializePlaneObject(string json)
+        public static RealTimeFlightObject DeserializePlaneResponse(string json)
         {
-            return JsonUtility.FromJson<PlaneObject>(json);
+            return JsonUtility.FromJson<RealTimeFlightObject>(json);
         }
         
         public static BuildingObject DeserializeBuildingObject(string json)
