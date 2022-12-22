@@ -4065,7 +4065,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43dc49b41be62334ca29760827f27c8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planeObject: {fileID: 0}
+  flightIata: {fileID: 744898204}
+  depIata: {fileID: 271458393}
+  arrIata: {fileID: 1064673494}
+  depTime: {fileID: 162002954}
+  arrTime: {fileID: 435516079}
+  depActual: {fileID: 55321653}
+  arrEstimated: {fileID: 326342154}
 --- !u!114 &520372991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4414,6 +4420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d196b0276fb1b014eadcd3fec575a7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsing: 0
   WheelContactIndex: 5
   DriveInOutIndex: 10
 --- !u!1 &581113697
