@@ -8,19 +8,20 @@ namespace Runtime.Planes
         [SerializeField]
         private GameObject planePrefab;
 
-        public void CreatePlane(FlightResponse plane)
+        public void CreatePlane(FlightResponse planeResponse)
         {
-            Debug.Log(plane.Flight_Iata 
-                      + "\n" + plane.Dep_Iata
-                      + "\n" + plane.Arr_Iata
-                      + "\n" + plane.Alt
-                      + "\n" + plane.Dep_Time
-                      + "\n" + plane.Arr_Time);
-        }
-
-        public void RemovePlane(Plane plane)
-        {
-
+            Debug.Log(planeResponse.Flight_Iata 
+                      + "\n" + planeResponse.Dep_Iata
+                      + "\n" + planeResponse.Arr_Iata
+                      + "\n" + planeResponse.Alt
+                      + "\n" + planeResponse.Dep_Time
+                      + "\n" + planeResponse.Arr_Time);
+            
+            var plane = Instantiate(planePrefab, transform.position, Quaternion.identity);
+            if (plane.TryGetComponent<Plane>(out var component))
+            {
+                component.SetFlight(planeResponse);
+            }
         }
     }
 }

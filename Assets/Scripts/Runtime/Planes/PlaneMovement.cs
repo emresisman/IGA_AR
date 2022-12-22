@@ -5,8 +5,8 @@ namespace Runtime.Planes
 {
     public class PlaneMovement : MonoBehaviour
     {
-        [SerializeField] private LineRenderer planeLandingRoute;
-        [SerializeField] private float currentPlaneSpeed = 1f;
+        private LineRenderer planeLandingRoute;
+        private float currentPlaneSpeed = 1f;
         private Route route;
         private PlaneState speedState;
         private float targetSpeed;
@@ -16,8 +16,9 @@ namespace Runtime.Planes
         private void Start()
         {
             currentIndex = 0;
+            route = RouteManager.Instance.GetAvailableLandingRoute();
+            planeLandingRoute = route.GetComponent<LineRenderer>();
             lastIndex = planeLandingRoute.positionCount - 1;
-            route = planeLandingRoute.GetComponent<Route>();
             SetStartPosition();
             SetStartSpeed();
         }

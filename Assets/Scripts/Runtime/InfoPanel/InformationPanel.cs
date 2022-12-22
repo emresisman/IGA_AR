@@ -1,6 +1,6 @@
+using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
+using Plane = Runtime.Planes.Plane;
 
 namespace Runtime.InfoPanel
 {
@@ -8,5 +8,13 @@ namespace Runtime.InfoPanel
     {
         [SerializeField] private GameObject myPanel;
         public GameObject MyPanel => this.myPanel;
+
+        private void Start()
+        {
+            if (gameObject.TryGetComponent<Plane>(out var component))
+            {
+                myPanel = PanelManager.Instance.GetPlanePanel().gameObject;
+            }
+        }
     }
 }

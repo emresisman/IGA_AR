@@ -20,8 +20,8 @@ namespace Runtime.InfoPanel
         private TMP_Text depActual;
         [SerializeField]
         private TMP_Text arrEstimated;
-        
-        public void SetPlaneInfoText(FlightResponse flight)
+
+        public void SetText(FlightResponse flight)
         {
             flightIata.text = flight.Flight_Iata;
             depIata.text = flight.Dep_Iata;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Plane = Runtime.Planes.Plane;
 
 namespace Runtime.InfoPanel
 {
@@ -84,6 +85,7 @@ namespace Runtime.InfoPanel
         private void OpenPanel(InformationPanel panel)
         {
             SetActive(panel.MyPanel);
+            CheckPlanePanel(panel);
             SetAnimationBool(true);
             activePanel = panel;
             AddOutline(activePanel.gameObject);
@@ -94,6 +96,19 @@ namespace Runtime.InfoPanel
             SetAnimationBool(false);
             ClearOutline(activePanel.gameObject);
             activePanel = null;
+        }
+
+        private void CheckPlanePanel(InformationPanel panel)
+        {
+            if (panel.TryGetComponent<Plane>(out var component))
+            {
+                component.SetText();
+            }
+        }
+
+        public PlanePanel GetPlanePanel()
+        {
+            return planePanel.GetComponent<PlanePanel>();
         }
 
         private void SetAnimationBool(bool value)
