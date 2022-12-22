@@ -11,7 +11,7 @@ namespace Runtime.Routes
 
     public class Route : MonoBehaviour
     {
-        public bool isUsing;
+        public bool isUsing = false;
         public int WheelContactIndex;
         public int DriveInOutIndex;
 
