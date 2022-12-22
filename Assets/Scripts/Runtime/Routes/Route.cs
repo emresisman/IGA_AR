@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Runtime
+namespace Runtime.Routes
 {
     public enum PlaneState
     {
@@ -9,8 +9,9 @@ namespace Runtime
         Driving
     }
 
-    public class Routes : MonoBehaviour
+    public class Route : MonoBehaviour
     {
+        public bool isUsing;
         public int WheelContactIndex;
         public int DriveInOutIndex;
 

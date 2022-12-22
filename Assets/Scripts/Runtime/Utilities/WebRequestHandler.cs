@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using Data.Plane;
+using Runtime.Planes;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -14,7 +15,10 @@ namespace Runtime.Utilities
         {
             flightsUri =
                 "https://airlabs.co/api/v9/flights?_fields=flight_iata,dep_iata,arr_iata,alt&arr_iata=IST&airline_iata=TK&bbox=41.216629,28.680496,41.343825,28.787956&api_key=5be83830-7a41-4b7f-b746-d1480d7dc7ac";
-            StartCoroutine(GetFlightInfo());
+            StartCoroutine(GetFlightInfo((myFlight) =>
+            {
+                /*if(myFlight.Alt < 500) */PlaneManager.Instance.CreatePlane(myFlight);
+            }));
         }
 
         IEnumerator GetNearestFlight()
@@ -26,9 +30,13 @@ namespace Runtime.Utilities
             switch (webRequest.result)
             {
                 case UnityWebRequest.Result.ConnectionError:
+                    //Error Message
+                    break;
                 case UnityWebRequest.Result.DataProcessingError:
+                    //Error Message
                     break;
                 case UnityWebRequest.Result.ProtocolError:
+                    //Error Message
                     break;
                 case UnityWebRequest.Result.Success:
                     var flight = ConvertResponseToObject(webRequest.downloadHandler.text);
@@ -37,7 +45,7 @@ namespace Runtime.Utilities
             }
         }
         
-        IEnumerator GetFlightInfo()
+        IEnumerator GetFlightInfo(System.Action<FlightResponse> callback)
         {
             yield return GetNearestFlight();
             using var webRequest = UnityWebRequest.Get(flightInfoUri);
@@ -47,13 +55,17 @@ namespace Runtime.Utilities
             switch (webRequest.result)
             {
                 case UnityWebRequest.Result.ConnectionError:
+                    //Error Message
+                    break;
                 case UnityWebRequest.Result.DataProcessingError:
+                    //Error Message
                     break;
                 case UnityWebRequest.Result.ProtocolError:
+                    //Error Message
                     break;
                 case UnityWebRequest.Result.Success:
-                    var flight = ConverFlightToObject(webRequest.downloadHandler.text);
-                    Debug.Log(flight.Flight_Iata + " " + flight.Dep_Iata + " " + flight.Arr_Iata);
+                    var flight = ConvertFlightToObject(webRequest.downloadHandler.text);
+                    callback(flight);
                     break;
             }
         }
@@ -73,7 +85,7 @@ namespace Runtime.Utilities
             return flight;
         }
 
-        private FlightResponse ConverFlightToObject(string text)
+        private FlightResponse ConvertFlightToObject(string text)
         {
             var data = JsonSerializer.DeserializeFlightObject(text);
             var flight = data.Response;

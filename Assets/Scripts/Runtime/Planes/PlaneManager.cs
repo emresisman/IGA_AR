@@ -1,16 +1,21 @@
+using Data.Plane;
 using UnityEngine;
 
 namespace Runtime.Planes
 {
-    public class PlaneManager : MonoBehaviour
+    public class PlaneManager : Singleton<PlaneManager>
     {
-        private PlaneSO planeObject;
         [SerializeField]
         private GameObject planePrefab;
 
-        public void CreatePlane()
+        public void CreatePlane(FlightResponse plane)
         {
-
+            Debug.Log(plane.Flight_Iata 
+                      + "\n" + plane.Dep_Iata
+                      + "\n" + plane.Arr_Iata
+                      + "\n" + plane.Alt
+                      + "\n" + plane.Dep_Time
+                      + "\n" + plane.Arr_Time);
         }
 
         public void RemovePlane(Plane plane)

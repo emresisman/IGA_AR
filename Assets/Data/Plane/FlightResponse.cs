@@ -21,6 +21,11 @@ namespace Data.Plane
             get => this.arr_iata;
             set => this.arr_iata = value;
         }        
+        [SerializeField] private int alt;
+        public int Alt {  
+            get => this.alt;
+            set => this.alt = value;
+        }        
         [SerializeField] private string dep_time;
         public string Dep_Time {  
             get => this.dep_time;

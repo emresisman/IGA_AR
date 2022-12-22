@@ -1,4 +1,5 @@
 using UnityEngine;
+using Runtime.Routes;
 
 namespace Runtime.Planes
 {
@@ -6,7 +7,7 @@ namespace Runtime.Planes
     {
         [SerializeField] private LineRenderer planeLandingRoute;
         [SerializeField] private float currentPlaneSpeed = 1f;
-        private Routes route;
+        private Route route;
         private PlaneState speedState;
         private float targetSpeed;
         private int currentIndex;
@@ -16,7 +17,7 @@ namespace Runtime.Planes
         {
             currentIndex = 0;
             lastIndex = planeLandingRoute.positionCount - 1;
-            route = planeLandingRoute.GetComponent<Routes>();
+            route = planeLandingRoute.GetComponent<Route>();
             SetStartPosition();
             SetStartSpeed();
         }
