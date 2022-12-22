@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Data.Plane;
 using UnityEngine;
 
@@ -8,8 +9,13 @@ namespace Runtime.Planes
         [SerializeField]
         private GameObject planePrefab;
 
+        private List<string> actionedPlanes = new List<string>();
+
         public void CreatePlane(FlightResponse planeResponse)
         {
+            if (actionedPlanes.Contains(planeResponse.Flight_Iata)) return;
+
+            actionedPlanes.Add(planeResponse.Flight_Iata);
             var plane = Instantiate(planePrefab, transform.position, Quaternion.identity);
             if (plane.TryGetComponent<Plane>(out var component))
             {

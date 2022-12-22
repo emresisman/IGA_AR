@@ -10,15 +10,26 @@ namespace Runtime.Utilities
     public class WebRequestHandler: MonoBehaviour
     {
         private string flightsUri, flightInfoUri;
+        private int minAlt = 999;
         
         private void Start()
         {
             flightsUri =
-                "https://airlabs.co/api/v9/flights?_fields=flight_iata,dep_iata,arr_iata,alt&arr_iata=IST&airline_iata=TK&bbox=41.216629,28.680496,41.343825,28.787956&api_key=5be83830-7a41-4b7f-b746-d1480d7dc7ac";
-            StartCoroutine(GetFlightInfo((myFlight) =>
+                "https://airlabs.co/api/v9/flights?_fields=flight_iata,dep_iata,arr_iata,alt&arr_iata=IST&airline_iata=TK&api_key=5be83830-7a41-4b7f-b746-d1480d7dc7ac";
+            StartCoroutine(RequestLoop());
+        }
+
+        IEnumerator RequestLoop()
+        {
+            while (true)
             {
-                /*if(myFlight.Alt < 500) */PlaneManager.Instance.CreatePlane(myFlight);
-            }));
+                yield return new WaitForSeconds(30);
+                StartCoroutine(GetFlightInfo((myFlight) =>
+                {
+                    Debug.Log(minAlt);
+                    if(minAlt <= 400) PlaneManager.Instance.CreatePlane(myFlight);
+                }));
+            }
         }
 
         IEnumerator GetNearestFlight()
@@ -81,6 +92,7 @@ namespace Runtime.Utilities
         {
             var data = JsonSerializer.DeserializeRealTimeFlightObject(text);
             var min = data.Response.Min(entry=> entry.Alt);
+            minAlt = min;
             var flight = data.Response.Find(entry => entry.Alt == min).Flight_Iata;
             return flight;
         }
