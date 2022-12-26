@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Data.Plane;
 using Runtime.Planes;
@@ -10,12 +11,15 @@ namespace Runtime.Utilities
     public class WebRequestHandler: MonoBehaviour
     {
         private string flightsUri, flightInfoUri;
-        private int minAlt = 999;
-        
+        private int minAlt = 1000;
+
+        private List<string> nearestPlanesAlt = new List<string>();
+        private List<FlightResponse> nearestPlanes = new List<FlightResponse>();
+
         private void Start()
         {
             flightsUri =
-                "https://airlabs.co/api/v9/flights?_fields=flight_iata,dep_iata,arr_iata,alt&arr_iata=IST&airline_iata=TK&api_key=5be83830-7a41-4b7f-b746-d1480d7dc7ac";
+                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&arr_iata=IST&airline_iata=TK&api_key=5be83830-7a41-4b7f-b746-d1480d7dc7ac";
             StartCoroutine(RequestLoop());
         }
 
@@ -23,16 +27,24 @@ namespace Runtime.Utilities
         {
             while (true)
             {
-                yield return new WaitForSeconds(30);
-                StartCoroutine(GetFlightInfo((myFlight) =>
+                nearestPlanesAlt.Clear();
+                nearestPlanes.Clear();
+                StartCoroutine(GetNearestFlights());
+                Debug.Log("En yakın uçuşlar çekildi...");
+                yield return new WaitForSeconds(5);
+                foreach (var flight in nearestPlanesAlt)
                 {
-                    Debug.Log(minAlt);
-                    if(minAlt <= 400) PlaneManager.Instance.CreatePlane(myFlight);
-                }));
+                    StartCoroutine(GetFlightInfo(GetFlightInfoUri(flight)));
+                }
+                Debug.Log("En yakın uçuşlar detayları çekildi...");
+                yield return new WaitForSeconds(5);
+                if(nearestPlanes.Count > 0) PlaneManager.Instance.UpdateNearestFlights(nearestPlanes);
+                Debug.Log("Uçuşlar PlaneManager'a gönderildi...");
+                yield return new WaitForSeconds(20);
             }
         }
 
-        IEnumerator GetNearestFlight()
+        IEnumerator GetNearestFlights()
         {
             using var webRequest = UnityWebRequest.Get(flightsUri);
             
@@ -50,16 +62,19 @@ namespace Runtime.Utilities
                     //Error Message
                     break;
                 case UnityWebRequest.Result.Success:
-                    var flight = ConvertResponseToObject(webRequest.downloadHandler.text);
-                    SetFlightInfoUri(flight);
+                    var flights = ConvertResponseToObject(webRequest.downloadHandler.text);
+                    foreach (var alt in flights)
+                    {
+                        nearestPlanesAlt.Add(alt.Flight_Iata);
+                        Debug.Log(alt.Flight_Iata);
+                    }
                     break;
             }
         }
         
-        IEnumerator GetFlightInfo(System.Action<FlightResponse> callback)
+        IEnumerator GetFlightInfo(string uri)
         {
-            yield return GetNearestFlight();
-            using var webRequest = UnityWebRequest.Get(flightInfoUri);
+            using var webRequest = UnityWebRequest.Get(uri);
             
             yield return webRequest.SendWebRequest();
 
@@ -76,25 +91,22 @@ namespace Runtime.Utilities
                     break;
                 case UnityWebRequest.Result.Success:
                     var flight = ConvertFlightToObject(webRequest.downloadHandler.text);
-                    callback(flight);
+                    nearestPlanes.Add(flight);
                     break;
             }
         }
 
-        private void SetFlightInfoUri(string flight)
+        private string GetFlightInfoUri(string flight)
         {
-            flightInfoUri =
-                "https://airlabs.co/api/v9/flight?_fields=flight_iata,dep_iata,arr_iata,dep_time,dep_actual,arr_time,arr_estimated&flight_iata=" +
+            return "https://airlabs.co/api/v9/flight?flight_iata=" +
                 flight + "&api_key=5be83830-7a41-4b7f-b746-d1480d7dc7ac";
         }
 
-        private string ConvertResponseToObject(string text)
+        private List<RealTimeFlightResponse> ConvertResponseToObject(string text)
         {
             var data = JsonSerializer.DeserializeRealTimeFlightObject(text);
-            var min = data.Response.Min(entry=> entry.Alt);
-            minAlt = min;
-            var flight = data.Response.Find(entry => entry.Alt == min).Flight_Iata;
-            return flight;
+            var flights = data.Response.Where(entry=> entry.Alt < minAlt && entry.Alt > 0).ToList();
+            return flights;
         }
 
         private FlightResponse ConvertFlightToObject(string text)

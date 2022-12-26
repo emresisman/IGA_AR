@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Data.Plane;
 using UnityEngine;
 
@@ -8,18 +11,44 @@ namespace Runtime.Planes
     {
         [SerializeField]
         private GameObject planePrefab;
+        
+        private List<string> landedPlanes = new List<string>();
+        private List<FlightResponse> onRoutePlanes = new List<FlightResponse>();
 
-        private List<string> actionedPlanes = new List<string>();
-
-        public void CreatePlane(FlightResponse planeResponse)
+        private void Start()
         {
-            if (actionedPlanes.Contains(planeResponse.Flight_Iata)) return;
+            StartCoroutine(CreatePlane());
+        }
 
-            actionedPlanes.Add(planeResponse.Flight_Iata);
-            var plane = Instantiate(planePrefab, transform.position, Quaternion.identity);
-            if (plane.TryGetComponent<Plane>(out var component))
+        IEnumerator CreatePlane()
+        {
+            while (true)
             {
-                component.SetFlight(planeResponse);
+                if (onRoutePlanes.Count > 0)
+                {
+                    var plane = Instantiate(planePrefab, transform.position, Quaternion.identity);
+                    if (plane.TryGetComponent<Plane>(out var component))
+                    {
+                        var planeResponse = onRoutePlanes[0];
+                        component.SetFlight(planeResponse);
+                        landedPlanes.Add(planeResponse.Flight_Iata);
+                        onRoutePlanes.Remove(planeResponse);
+                    }
+                }
+
+                yield return new WaitForSeconds(25f);
+            }
+        }
+
+        public void UpdateNearestFlights(List<FlightResponse> flights)
+        {
+            var listedFlights = flights.OrderBy(x=> x.Alt).ToList();
+            foreach (var plane in listedFlights)
+            {
+                if (onRoutePlanes.Any(x=> x.Flight_Iata == plane.Flight_Iata) || 
+                    landedPlanes.Contains(plane.Flight_Iata)) continue;
+                
+                onRoutePlanes.Add(plane);
             }
         }
     }
