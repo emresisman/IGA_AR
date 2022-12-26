@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorChildObject: {fileID: 1629581638}
-  objectToPlace: {fileID: 3844472775784748568, guid: e6b86eb11b9134bad8bf4621fa05d893,
+  objectToPlace: {fileID: 3844472775784748568, guid: 2f23c3bbe2c7a4a68aea836724d4b44d,
     type: 3}
   raycastManager: {fileID: 352163179}
   arCamera: {fileID: 1179691315}
