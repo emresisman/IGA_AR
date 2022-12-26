@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: f71abcf61db204a9ba94aed3214244c1
+guid: 83284d79dd864a6499cd9c37ce259d81
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: thytechnic2
-    second: {fileID: 2100000, guid: d300d66b7e9f3431383006b80674eb54, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
