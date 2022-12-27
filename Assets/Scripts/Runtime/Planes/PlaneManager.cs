@@ -12,15 +12,15 @@ namespace Runtime.Planes
         [SerializeField]
         private GameObject planePrefab;
         
-        private List<string> landedPlanes = new List<string>();
-        private List<FlightResponse> onRoutePlanes = new List<FlightResponse>();
+        private readonly List<string> landedPlanes = new List<string>();
+        private readonly List<FlightResponse> onRoutePlanes = new List<FlightResponse>();
 
         private void Start()
         {
             StartCoroutine(CreatePlane());
         }
 
-        IEnumerator CreatePlane()
+        private IEnumerator CreatePlane()
         {
             while (true)
             {
@@ -40,7 +40,7 @@ namespace Runtime.Planes
             }
         }
 
-        public void UpdateNearestFlights(List<FlightResponse> flights)
+        public void UpdateArrivalFlights(List<FlightResponse> flights)
         {
             var listedFlights = flights.OrderBy(x=> x.Alt).ToList();
             foreach (var plane in listedFlights)
@@ -50,6 +50,18 @@ namespace Runtime.Planes
                 
                 onRoutePlanes.Add(plane);
             }
+        }
+        
+        public void UpdateDepartureFlights(List<FlightResponse> flights)
+        {
+            /*var listedFlights = flights.OrderBy(x=> x.Alt).ToList();
+            foreach (var plane in listedFlights)
+            {
+                if (onRoutePlanes.Any(x=> x.Flight_Iata == plane.Flight_Iata) || 
+                    landedPlanes.Contains(plane.Flight_Iata)) continue;
+                
+                onRoutePlanes.Add(plane);
+            }*/
         }
     }
 }

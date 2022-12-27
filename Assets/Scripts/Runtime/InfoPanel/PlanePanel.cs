@@ -20,6 +20,8 @@ namespace Runtime.InfoPanel
         private TMP_Text depActual;
         [SerializeField]
         private TMP_Text arrEstimated;
+        [SerializeField]
+        private TMP_Text planeModel;
 
         public void SetText(FlightResponse flight)
         {
@@ -30,6 +32,7 @@ namespace Runtime.InfoPanel
             arrTime.text = flight.Arr_Time;
             depActual.text = flight.Dep_Actual;
             arrEstimated.text = flight.Arr_Estimated;
+            planeModel.text = flight.Model;
         }
     }
 }

@@ -26,6 +26,11 @@ namespace Data.Plane
             get => this.alt;
             set => this.alt = value;
         }        
+        [SerializeField] private int duration;
+        public int Duration {  
+            get => this.duration;
+            set => this.duration = value;
+        }        
         [SerializeField] private string dep_time;
         public string Dep_Time {  
             get => this.dep_time;
@@ -45,6 +50,11 @@ namespace Data.Plane
         public string Arr_Estimated {  
             get => this.arr_estimated;
             set => this.arr_estimated = value;
+        }        
+        [SerializeField] private string model;
+        public string Model {  
+            get => this.model;
+            set => this.model = value;
         }
     }
 }

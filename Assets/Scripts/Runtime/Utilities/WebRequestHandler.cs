@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using Data.Plane;
 using Runtime.Planes;
 using UnityEngine;
@@ -8,112 +9,173 @@ using UnityEngine.Networking;
 
 namespace Runtime.Utilities
 {
+    public enum FlightDirection
+    {
+        Arrival,
+        Departure
+    }
+    
     public class WebRequestHandler: MonoBehaviour
     {
-        private string flightsUri, flightInfoUri;
-        private int minAlt = 1000;
-
-        private List<string> nearestPlanesAlt = new List<string>();
-        private List<FlightResponse> nearestPlanes = new List<FlightResponse>();
+        private string arrivalFlightsUri, departureFlightsUri;
+        
+        private readonly List<string> nearestArrivals = new List<string>();
+        private readonly List<string> nearestDepartures = new List<string>();
+        private readonly List<FlightResponse> nearestArrivalPlanes = new List<FlightResponse>();
+        private readonly List<FlightResponse> nearestDeparturePlanes = new List<FlightResponse>();
 
         private void Start()
         {
-            flightsUri =
+            arrivalFlightsUri =
                 "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&arr_iata=IST&airline_iata=TK&api_key=5be83830-7a41-4b7f-b746-d1480d7dc7ac";
+            
+            departureFlightsUri =
+                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&dep_iata=IST&airline_iata=TK&api_key=5be83830-7a41-4b7f-b746-d1480d7dc7ac";
+            
             StartCoroutine(RequestLoop());
         }
 
-        IEnumerator RequestLoop()
+        private IEnumerator RequestLoop()
         {
             while (true)
             {
-                nearestPlanesAlt.Clear();
-                nearestPlanes.Clear();
-                StartCoroutine(GetNearestFlights());
+                ClearAllList();
+
+                StartCoroutine(GetNearestArrivals());
+                StartCoroutine(GetNearestDeparture());
                 Debug.Log("En yakın uçuşlar çekildi...");
                 yield return new WaitForSeconds(5);
-                foreach (var flight in nearestPlanesAlt)
-                {
-                    StartCoroutine(GetFlightInfo(GetFlightInfoUri(flight)));
-                }
-                Debug.Log("En yakın uçuşlar detayları çekildi...");
+                
+                
+                PullArrivalDetails();
+                PullDepartureDetails();
+                Debug.Log("En yakın uçuşların detayları çekildi...");
                 yield return new WaitForSeconds(5);
-                if(nearestPlanes.Count > 0) PlaneManager.Instance.UpdateNearestFlights(nearestPlanes);
+                
+                
+                SendArrivalToPlaneManager();
+                SendDepartureToPlaneManager();
                 Debug.Log("Uçuşlar PlaneManager'a gönderildi...");
                 yield return new WaitForSeconds(20);
             }
         }
 
-        IEnumerator GetNearestFlights()
+        private IEnumerator GetNearestArrivals()
         {
-            using var webRequest = UnityWebRequest.Get(flightsUri);
+            using var webRequest = UnityWebRequest.Get(arrivalFlightsUri);
             
             yield return webRequest.SendWebRequest();
 
-            switch (webRequest.result)
+            if (webRequest.result != UnityWebRequest.Result.Success) yield break;
+            var flights = JsonSerializer.ConvertResponseToObject(webRequest.downloadHandler.text);
+            foreach (var alt in flights)
             {
-                case UnityWebRequest.Result.ConnectionError:
-                    //Error Message
-                    break;
-                case UnityWebRequest.Result.DataProcessingError:
-                    //Error Message
-                    break;
-                case UnityWebRequest.Result.ProtocolError:
-                    //Error Message
-                    break;
-                case UnityWebRequest.Result.Success:
-                    var flights = ConvertResponseToObject(webRequest.downloadHandler.text);
-                    foreach (var alt in flights)
-                    {
-                        nearestPlanesAlt.Add(alt.Flight_Iata);
-                        Debug.Log(alt.Flight_Iata);
-                    }
-                    break;
+                nearestArrivals.Add(alt.Flight_Iata);
             }
         }
         
-        IEnumerator GetFlightInfo(string uri)
+        private IEnumerator GetNearestDeparture()
+        {
+            using var webRequest = UnityWebRequest.Get(departureFlightsUri);
+            
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success) yield break;
+            var flights = JsonSerializer.ConvertResponseToObject(webRequest.downloadHandler.text);
+            foreach (var alt in flights)
+            {
+                nearestDepartures.Add(alt.Flight_Iata);
+            }
+        }
+        
+        private IEnumerator GetFlightDetails(string uri, FlightDirection direction)
         {
             using var webRequest = UnityWebRequest.Get(uri);
             
             yield return webRequest.SendWebRequest();
 
-            switch (webRequest.result)
+            if (webRequest.result != UnityWebRequest.Result.Success) yield break;
+            var flight = JsonSerializer.ConvertFlightToObject(webRequest.downloadHandler.text);
+            Debug.Log("1000 matre altındaki uçuş : " + flight.Flight_Iata);
+            switch (direction)
             {
-                case UnityWebRequest.Result.ConnectionError:
-                    //Error Message
+                case FlightDirection.Arrival:
+                    if(!IsPlaneLanding(flight)) break;
+                    nearestArrivalPlanes.Add(flight);
+                    Debug.Log("Geçerli iniş Yapan : " + flight.Flight_Iata);
                     break;
-                case UnityWebRequest.Result.DataProcessingError:
-                    //Error Message
-                    break;
-                case UnityWebRequest.Result.ProtocolError:
-                    //Error Message
-                    break;
-                case UnityWebRequest.Result.Success:
-                    var flight = ConvertFlightToObject(webRequest.downloadHandler.text);
-                    nearestPlanes.Add(flight);
+                case FlightDirection.Departure:
+                    if(!IsPlaneTakingOff(flight)) break;
+                    nearestDeparturePlanes.Add(flight);
+                    Debug.Log("Geçerli kalkış Yapan : " + flight.Flight_Iata);
                     break;
             }
         }
 
-        private string GetFlightInfoUri(string flight)
+        private bool IsPlaneLanding(FlightResponse flight)
+        {
+            if (flight.Dep_Time == null) return false;
+            var duration = flight.Duration;
+            var depTime = flight.Dep_Time;
+            var givenTime = DateTime.ParseExact(depTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            var currentTime = DateTime.Now;
+            var difference = currentTime.Subtract(givenTime);
+            return !(difference.TotalMinutes < (duration / 2));
+        }
+
+        private bool IsPlaneTakingOff(FlightResponse flight)
+        {
+            if (flight.Dep_Time == null) return false;
+            var duration = flight.Duration;
+            var depTime = flight.Dep_Time;
+            var givenTime = DateTime.ParseExact(depTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            var currentTime = DateTime.Now;
+            var difference = currentTime.Subtract(givenTime);
+            return !(difference.TotalMinutes > (duration / 2));
+        }
+
+        private void ClearAllList()
+        {
+            nearestArrivals.Clear();
+            nearestDepartures.Clear();
+            nearestArrivalPlanes.Clear();
+            nearestDeparturePlanes.Clear();
+        }
+
+        private string GetFlightDetailsUri(string flight)
         {
             return "https://airlabs.co/api/v9/flight?flight_iata=" +
                 flight + "&api_key=5be83830-7a41-4b7f-b746-d1480d7dc7ac";
         }
 
-        private List<RealTimeFlightResponse> ConvertResponseToObject(string text)
+        private void PullArrivalDetails()
         {
-            var data = JsonSerializer.DeserializeRealTimeFlightObject(text);
-            var flights = data.Response.Where(entry=> entry.Alt < minAlt && entry.Alt > 0).ToList();
-            return flights;
+            if(nearestArrivals.Count == 0) return;
+            foreach (var flight in nearestArrivals)
+            {
+                StartCoroutine(GetFlightDetails(GetFlightDetailsUri(flight), FlightDirection.Arrival));
+            }
+        }
+        
+        private void PullDepartureDetails()
+        {
+            if(nearestDepartures.Count == 0) return;
+            foreach (var flight in nearestDepartures)
+            {
+                StartCoroutine(GetFlightDetails(GetFlightDetailsUri(flight), FlightDirection.Departure));
+            }
         }
 
-        private FlightResponse ConvertFlightToObject(string text)
+        private void SendArrivalToPlaneManager()
         {
-            var data = JsonSerializer.DeserializeFlightObject(text);
-            var flight = data.Response;
-            return flight;
+            if(nearestArrivalPlanes.Count == 0) return;
+            PlaneManager.Instance.UpdateArrivalFlights(nearestArrivalPlanes);
+        }
+        
+        private void SendDepartureToPlaneManager()
+        {
+            if(nearestDeparturePlanes.Count == 0) return;
+            PlaneManager.Instance.UpdateDepartureFlights(nearestDeparturePlanes);
         }
     }
 }
