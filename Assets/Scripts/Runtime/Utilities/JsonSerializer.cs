@@ -10,7 +10,8 @@ namespace Runtime.Utilities
         private static RealTimeFlightObject DeserializeRealTimeFlightObject(string json)
         {
             return JsonUtility.FromJson<RealTimeFlightObject>(json);
-        }        
+        }
+        
         private static FlightObject DeserializeFlightObject(string json)
         {
             return JsonUtility.FromJson<FlightObject>(json);
@@ -29,6 +30,5 @@ namespace Runtime.Utilities
             var flight = data.Response;
             return flight;
         }
-
     }
 }

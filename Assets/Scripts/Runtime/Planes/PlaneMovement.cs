@@ -1,5 +1,6 @@
 using UnityEngine;
 using Runtime.Routes;
+using Runtime.Utilities;
 
 namespace Runtime.Planes
 {
@@ -8,6 +9,7 @@ namespace Runtime.Planes
         private LineRenderer planeLandingRoute;
         private float currentPlaneSpeed = 1f;
         private Route route;
+        private FlightDirection myDirection;
         private PlaneState speedState;
         private float targetSpeed;
         private int currentIndex;
@@ -16,11 +18,6 @@ namespace Runtime.Planes
         private void Start()
         {
             currentIndex = 0;
-            route = RouteManager.Instance.GetAvailableLandingRoute();
-            planeLandingRoute = route.GetComponent<LineRenderer>();
-            lastIndex = planeLandingRoute.positionCount - 1;
-            SetStartPosition();
-            SetStartSpeed();
         }
 
         private void Update()
@@ -28,6 +25,30 @@ namespace Runtime.Planes
             if (currentIndex == lastIndex) return;
             Move();
             CalculateSpeed();
+        }
+
+        public void StartFlight(FlightDirection direction)
+        {
+            myDirection = direction;
+            SetRoute();
+            planeLandingRoute = route.GetComponent<LineRenderer>();
+            lastIndex = planeLandingRoute.positionCount - 1;
+            SetStartPosition();
+            SetStartSpeed();
+            Rotate();
+        }
+
+        private void SetRoute()
+        {
+            switch (myDirection)
+            {
+                case FlightDirection.Arrival:
+                    route = RouteManager.Instance.GetAvailableLandingRoute();
+                    break;
+                case FlightDirection.Departure:
+                    route = RouteManager.Instance.GetAvailableTakeOffRoute();
+                    break;;
+            }
         }
 
         private void SetStartPosition()

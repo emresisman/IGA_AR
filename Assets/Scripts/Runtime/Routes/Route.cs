@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Runtime.Routes
 {
@@ -12,16 +13,16 @@ namespace Runtime.Routes
     public class Route : MonoBehaviour
     {
         public bool isUsing = false;
-        public int WheelContactIndex;
-        public int DriveInOutIndex;
+        public int wheelContactIndex;
+        public int driveInOutIndex;
 
         public PlaneState GetPlaneState(int planeIndex)
         {
-            if (planeIndex <= WheelContactIndex)
+            if (planeIndex <= wheelContactIndex)
             {
                 return PlaneState.OnAir;
             }
-            else if (planeIndex <= DriveInOutIndex)
+            else if (planeIndex <= driveInOutIndex)
             {
                 return PlaneState.Landed;
             }

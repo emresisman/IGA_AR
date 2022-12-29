@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Data.Plane;
+using Runtime.Utilities;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Runtime.Planes
 {
@@ -13,30 +15,53 @@ namespace Runtime.Planes
         private GameObject planePrefab;
         
         private readonly List<string> landedPlanes = new List<string>();
-        private readonly List<FlightResponse> onRoutePlanes = new List<FlightResponse>();
+        private readonly List<string> takeOffPlanes = new List<string>();
+        private readonly List<FlightResponse> onRouteLandingPlanes = new List<FlightResponse>();
+        private readonly List<FlightResponse> onRouteTakeOffPlanes = new List<FlightResponse>();
 
         private void Start()
         {
-            StartCoroutine(CreatePlane());
+            StartCoroutine(CreateLandingPlane());
+            StartCoroutine(CreateTakeOffPlane());
         }
 
-        private IEnumerator CreatePlane()
+        private IEnumerator CreateLandingPlane()
         {
             while (true)
             {
-                if (onRoutePlanes.Count > 0)
+                if (onRouteLandingPlanes.Count > 0)
                 {
                     var plane = Instantiate(planePrefab, transform.position, Quaternion.identity);
                     if (plane.TryGetComponent<Plane>(out var component))
                     {
-                        var planeResponse = onRoutePlanes[0];
-                        component.SetFlight(planeResponse);
+                        var planeResponse = onRouteLandingPlanes[0];
+                        component.SetFlight(planeResponse, FlightDirection.Arrival);
                         landedPlanes.Add(planeResponse.Flight_Iata);
-                        onRoutePlanes.Remove(planeResponse);
+                        onRouteLandingPlanes.Remove(planeResponse);
                     }
                 }
 
-                yield return new WaitForSeconds(25f);
+                yield return new WaitForSeconds(Random.Range(22,30));
+            }
+        }
+        
+        private IEnumerator CreateTakeOffPlane()
+        {
+            while (true)
+            {
+                if (onRouteTakeOffPlanes.Count > 0)
+                {
+                    var plane = Instantiate(planePrefab, transform.position, Quaternion.identity);
+                    if (plane.TryGetComponent<Plane>(out var component))
+                    {
+                        var planeResponse = onRouteTakeOffPlanes[0];
+                        component.SetFlight(planeResponse, FlightDirection.Departure);
+                        takeOffPlanes.Add(planeResponse.Flight_Iata);
+                        onRouteTakeOffPlanes.Remove(planeResponse);
+                    }
+                }
+
+                yield return new WaitForSeconds(Random.Range(22,30));
             }
         }
 
@@ -45,23 +70,23 @@ namespace Runtime.Planes
             var listedFlights = flights.OrderBy(x=> x.Alt).ToList();
             foreach (var plane in listedFlights)
             {
-                if (onRoutePlanes.Any(x=> x.Flight_Iata == plane.Flight_Iata) || 
+                if (onRouteLandingPlanes.Any(x=> x.Flight_Iata == plane.Flight_Iata) || 
                     landedPlanes.Contains(plane.Flight_Iata)) continue;
                 
-                onRoutePlanes.Add(plane);
+                onRouteLandingPlanes.Add(plane);
             }
         }
         
         public void UpdateDepartureFlights(List<FlightResponse> flights)
         {
-            /*var listedFlights = flights.OrderBy(x=> x.Alt).ToList();
+            var listedFlights = flights.OrderBy(x=> x.Alt).ToList();
             foreach (var plane in listedFlights)
             {
-                if (onRoutePlanes.Any(x=> x.Flight_Iata == plane.Flight_Iata) || 
-                    landedPlanes.Contains(plane.Flight_Iata)) continue;
+                if (onRouteTakeOffPlanes.Any(x=> x.Flight_Iata == plane.Flight_Iata) || 
+                    takeOffPlanes.Contains(plane.Flight_Iata)) continue;
                 
-                onRoutePlanes.Add(plane);
-            }*/
+                onRouteTakeOffPlanes.Add(plane);
+            }
         }
     }
 }

@@ -114,22 +114,22 @@ namespace Runtime.Utilities
 
         private bool IsPlaneLanding(FlightResponse flight)
         {
-            if (flight.Dep_Time == null) return false;
+            if (flight.Dep_Time_Utc == null) return false;
             var duration = flight.Duration;
-            var depTime = flight.Dep_Time;
+            var depTime = flight.Dep_Time_Utc;
             var givenTime = DateTime.ParseExact(depTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
-            var currentTime = DateTime.Now;
+            var currentTime = DateTime.UtcNow;
             var difference = currentTime.Subtract(givenTime);
             return !(difference.TotalMinutes < (duration / 2));
         }
 
         private bool IsPlaneTakingOff(FlightResponse flight)
         {
-            if (flight.Dep_Time == null) return false;
+            if (flight.Dep_Time_Utc == null) return false;
             var duration = flight.Duration;
-            var depTime = flight.Dep_Time;
+            var depTime = flight.Dep_Time_Utc;
             var givenTime = DateTime.ParseExact(depTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
-            var currentTime = DateTime.Now;
+            var currentTime = DateTime.UtcNow;
             var difference = currentTime.Subtract(givenTime);
             return !(difference.TotalMinutes > (duration / 2));
         }

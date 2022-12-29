@@ -1,6 +1,7 @@
 using System;
 using Data.Plane;
 using Runtime.InfoPanel;
+using Runtime.Utilities;
 using UnityEngine;
 
 namespace Runtime.Planes
@@ -8,6 +9,7 @@ namespace Runtime.Planes
     public class Plane : MonoBehaviour
     {
         private PlanePanel myPanel;
+        private PlaneMovement myMovement;
         private FlightResponse myFlightInfo;
 
         private void Start()
@@ -15,9 +17,15 @@ namespace Runtime.Planes
             myPanel = PanelManager.Instance.GetPlanePanel();
         }
 
-        public void SetFlight(FlightResponse flight)
+        private void Awake()
+        {
+            myMovement = this.gameObject.GetComponent<PlaneMovement>();
+        }
+
+        public void SetFlight(FlightResponse flight, FlightDirection direction)
         {
             myFlightInfo = flight;
+            myMovement.StartFlight(direction);
         }
 
         public void SetText()

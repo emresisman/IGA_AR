@@ -31,25 +31,25 @@ namespace Data.Plane
             get => this.duration;
             set => this.duration = value;
         }        
-        [SerializeField] private string dep_time;
-        public string Dep_Time {  
-            get => this.dep_time;
-            set => this.dep_time = value;
+        [SerializeField] private string dep_time_utc;
+        public string Dep_Time_Utc {  
+            get => this.dep_time_utc;
+            set => this.dep_time_utc = value;
         }        
-        [SerializeField] private string arr_time;
-        public string Arr_Time {  
-            get => this.arr_time;
-            set => this.arr_time = value;
+        [SerializeField] private string arr_time_utc;
+        public string Arr_Time_Utc {  
+            get => this.arr_time_utc;
+            set => this.arr_time_utc = value;
         }        
-        [SerializeField] private string dep_actual;
-        public string Dep_Actual {  
-            get => this.dep_actual;
-            set => this.dep_actual = value;
+        [SerializeField] private string dep_actual_utc;
+        public string Dep_Actual_Utc {  
+            get => this.dep_actual_utc;
+            set => this.dep_actual_utc = value;
         }        
-        [SerializeField] private string arr_estimated;
-        public string Arr_Estimated {  
-            get => this.arr_estimated;
-            set => this.arr_estimated = value;
+        [SerializeField] private string arr_estimated_utc;
+        public string Arr_Estimated_Utc {  
+            get => this.arr_estimated_utc;
+            set => this.arr_estimated_utc = value;
         }        
         [SerializeField] private string model;
         public string Model {  
