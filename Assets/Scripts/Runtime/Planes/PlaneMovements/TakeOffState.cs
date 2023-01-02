@@ -17,7 +17,7 @@ namespace Runtime.Planes.PlaneMovements
 
         public override void Enter()
         {
-            route = RouteManager.Instance.GetAvailableLandingRoute();
+            route = RouteManager.Instance.GetAvailableTakeOffRoute();
             takeOffRoute = route.myRoute;
             lastIndex = takeOffRoute.positionCount - 1;
             SetStartPosition();
@@ -45,8 +45,8 @@ namespace Runtime.Planes.PlaneMovements
 
         public override void PhysicsUpdate()
         {
-            Move();
             Rotate();
+            Move();
         }
         
         private void Move()

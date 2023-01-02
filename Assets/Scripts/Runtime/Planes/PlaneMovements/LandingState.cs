@@ -45,8 +45,8 @@ namespace Runtime.Planes.PlaneMovements
 
         public override void PhysicsUpdate()
         {
-            Move();
             Rotate();
+            Move();
         }
         
         private void Move()
