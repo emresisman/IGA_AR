@@ -6,7 +6,7 @@ namespace Runtime.InfoPanel
 {
     public class PanelManager : Singleton<PanelManager>
     {
-        [SerializeField] private Camera mainCamera;
+        private Camera mainCamera;
         [SerializeField] protected Animator infoPanelAnimator;
         [SerializeField] private GameObject turkishTechnicPanel;
         [SerializeField] private GameObject turkishCargoPanel;
@@ -21,6 +21,7 @@ namespace Runtime.InfoPanel
 
         private void Start()
         {
+            mainCamera = Camera.main;
             isPanelActive = false;
             allPanels = new List<GameObject>();
             AddAllPanels();
