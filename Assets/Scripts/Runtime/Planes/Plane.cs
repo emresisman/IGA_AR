@@ -18,7 +18,7 @@ namespace Runtime.Planes
         private PlanePanel myPanel;
         private FlightResponse myFlightInfo;
 
-        private void Start()
+        private void Awake()
         {
             MovementStateMachine = new StateMachine();
 
