@@ -1,6 +1,7 @@
 using System;
 using Data.Plane;
 using Runtime.InfoPanel;
+using Runtime.Planes.PlaneMovements;
 using Runtime.Utilities;
 using UnityEngine;
 
@@ -8,24 +9,51 @@ namespace Runtime.Planes
 {
     public class Plane : MonoBehaviour
     {
+        public StateMachine MovementStateMachine;
+        public LandingState Landing;
+        public TakeOffState TakeOff;
+        public StoppedState Stopped;
+        
+
         private PlanePanel myPanel;
-        private PlaneMovement myMovement;
         private FlightResponse myFlightInfo;
 
         private void Start()
         {
+            MovementStateMachine = new StateMachine();
+
+            Landing = new LandingState(this, MovementStateMachine);
+            TakeOff = new TakeOffState(this, MovementStateMachine);
+            Stopped = new StoppedState(this, MovementStateMachine);
+            
+            MovementStateMachine.Initialize(Stopped);
+            
             myPanel = PanelManager.Instance.GetPlanePanel();
         }
 
-        private void Awake()
+        private void Update()
         {
-            myMovement = this.gameObject.GetComponent<PlaneMovement>();
+            MovementStateMachine.CurrentState.HandleInput();
+            MovementStateMachine.CurrentState.LogicUpdate();
+        }
+
+        private void FixedUpdate()
+        {
+            MovementStateMachine.CurrentState.PhysicsUpdate();
         }
 
         public void SetFlight(FlightResponse flight, FlightDirection direction)
         {
             myFlightInfo = flight;
-            myMovement.StartFlight(direction);
+            switch (direction)
+            {
+                case FlightDirection.Arrival:
+                    MovementStateMachine.ChangeState(Landing);
+                    break;
+                case FlightDirection.Departure:
+                    MovementStateMachine.ChangeState(TakeOff);
+                    break;
+            }
         }
 
         public void SetText()

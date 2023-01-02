@@ -1,12 +1,12 @@
-using UnityEngine;
 using Runtime.Routes;
 using Runtime.Utilities;
+using UnityEngine;
 
-namespace Runtime.Planes
+namespace Runtime.Planes.PlaneMovements
 {
     public class PlaneMovement : MonoBehaviour
     {
-        private LineRenderer planeLandingRoute;
+        /*private LineRenderer planeLandingRoute;
         private float currentPlaneSpeed = 1f;
         private Route route;
         private FlightDirection myDirection;
@@ -121,6 +121,6 @@ namespace Runtime.Planes
         private void DecreaseSpeed()
         {
             currentPlaneSpeed -= Time.deltaTime / currentPlaneSpeed;
-        }
+        }*/
     }
 }

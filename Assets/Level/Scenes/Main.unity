@@ -2171,9 +2171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d196b0276fb1b014eadcd3fec575a7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myRoute: {fileID: 576485208}
   isUsing: 0
-  WheelContactIndex: 5
-  DriveInOutIndex: 11
+  wheelContactIndex: 6
+  driveInOutIndex: 16
 --- !u!1 &581113697
 GameObject:
   m_ObjectHideFlags: 0
@@ -3209,9 +3210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d196b0276fb1b014eadcd3fec575a7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myRoute: {fileID: 1036394069}
   isUsing: 0
-  WheelContactIndex: 5
-  DriveInOutIndex: 11
+  wheelContactIndex: 47
+  driveInOutIndex: 41
 --- !u!1 &1064673492
 GameObject:
   m_ObjectHideFlags: 0
