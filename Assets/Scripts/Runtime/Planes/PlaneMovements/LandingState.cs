@@ -27,7 +27,7 @@ namespace Runtime.Planes.PlaneMovements
 
         public override void Exit()
         {
-            
+            PlaneManager.Instance.RemovePlane(plane.gameObject);
         }
 
         public override void HandleInput()

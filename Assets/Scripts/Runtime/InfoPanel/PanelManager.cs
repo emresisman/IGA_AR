@@ -150,7 +150,10 @@ namespace Runtime.InfoPanel
 
         private void ClearOutline(GameObject obj)
         {
-            Destroy(obj.GetComponent<Outline>());
+            if (obj.TryGetComponent<Outline>(out var component))
+            {
+                Destroy(component);
+            }
         }
     }
 }

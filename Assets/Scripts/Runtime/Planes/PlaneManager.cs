@@ -88,5 +88,17 @@ namespace Runtime.Planes
                 onRouteTakeOffPlanes.Add(plane);
             }
         }
+
+        public void RemovePlane(GameObject plane)
+        {
+            StartCoroutine(DestroyPlane(plane));
+        }
+
+        private IEnumerator DestroyPlane(GameObject plane)
+        {
+            yield return new WaitForSeconds(3f);
+            Destroy(plane);
+            
+        }
     }
 }
