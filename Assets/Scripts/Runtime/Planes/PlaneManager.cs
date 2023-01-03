@@ -38,7 +38,6 @@ namespace Runtime.Planes
                         component.SetFlight(planeResponse, FlightDirection.Arrival);
                         landedPlanes.Add(planeResponse.Flight_Iata);
                         onRouteLandingPlanes.Remove(planeResponse);
-                        plane.transform.parent = GameObject.FindGameObjectWithTag("PlaneParent").transform;
                     }
                 }
 
@@ -59,7 +58,6 @@ namespace Runtime.Planes
                         component.SetFlight(planeResponse, FlightDirection.Departure);
                         takeOffPlanes.Add(planeResponse.Flight_Iata);
                         onRouteTakeOffPlanes.Remove(planeResponse);
-                        plane.transform.parent = GameObject.FindGameObjectWithTag("PlaneParent").transform;
                     }
                 }
 

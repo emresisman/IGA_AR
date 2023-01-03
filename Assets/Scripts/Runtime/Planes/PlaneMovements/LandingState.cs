@@ -53,11 +53,11 @@ namespace Runtime.Planes.PlaneMovements
         {
             plane.transform.position = Vector3.MoveTowards(
                 plane.transform.position,
-                landingRoute.GetPosition(currentIndex + 1) + landingRoute.transform.position,
+                landingRoute.transform.TransformPoint(landingRoute.GetPosition(currentIndex + 1)),
                 planeSpeed * Time.deltaTime
             );
 
-            if (plane.transform.position != landingRoute.GetPosition(currentIndex + 1) + landingRoute.transform.position) return;
+            if (plane.transform.position != landingRoute.transform.TransformPoint(landingRoute.GetPosition(currentIndex + 1))) return;
             
             currentIndex += 1;
             UpdateState();
@@ -66,14 +66,14 @@ namespace Runtime.Planes.PlaneMovements
         
         private void Rotate()
         {
-            var relative = plane.transform.InverseTransformPoint(landingRoute.GetPosition(currentIndex + 1) + landingRoute.transform.position);
+            var relative = plane.transform.InverseTransformPoint(landingRoute.transform.TransformPoint(landingRoute.GetPosition(currentIndex + 1)));
             var angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg;
             plane.transform.Rotate(0, angle, 0);
         }
         
         private void SetStartPosition()
         {
-            plane.transform.position = landingRoute.GetPosition(currentIndex) + landingRoute.transform.position;
+            plane.transform.position = landingRoute.transform.TransformPoint(landingRoute.GetPosition(currentIndex));
         }
         
         private void SetStartSpeed()
@@ -93,13 +93,13 @@ namespace Runtime.Planes.PlaneMovements
             switch (speedState)
             {
                 case PlaneState.OnAir:
-                    targetSpeed = 4f;
+                    targetSpeed = 2f;
                     break;
                 case PlaneState.Landed:
-                    targetSpeed = 1.5f;
+                    targetSpeed = 0.75f;
                     break;
                 case PlaneState.Driving:
-                    targetSpeed = 1f;
+                    targetSpeed = 0.5f;
                     break;
             }
         }

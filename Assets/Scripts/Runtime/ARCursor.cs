@@ -1,61 +1,48 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
-public class ARCursor : MonoBehaviour
+namespace Runtime
 {
-    public GameObject cursorChildObject;
-    public GameObject objectToPlace;
-    public ARRaycastManager raycastManager;
-    public Camera arCamera;
-
-    public bool useCursor = true;
-    private bool isSpawned = false;
-
-    void Start()
+    public class ARCursor : MonoBehaviour
     {
-        cursorChildObject.SetActive(useCursor);
-    }
+        public GameObject cursorChildObject;
+        public GameObject objectToPlace;
+        public ARRaycastManager raycastManager;
+        public Camera arCamera;
+    
+        private bool isSpawned = false;
 
-    void Update()
-    {
-        if (isSpawned) return;
-        if (useCursor)
+        private void Start()
         {
+            cursorChildObject.SetActive(true);
+        }
+
+        private void Update()
+        {
+            if (isSpawned) return;
+
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+
+                Instantiate(objectToPlace, transform.position, Quaternion.identity);
+                isSpawned = true;
+                cursorChildObject.SetActive(false);
+            }
+            
             UpdateCursor();
         }
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        private void UpdateCursor()
         {
-            if (useCursor)
-            {
-                GameObject.Instantiate(objectToPlace, transform.position, transform.rotation);
-            }
-            else
-            {
-                List<ARRaycastHit> hits = new List<ARRaycastHit>();
-                raycastManager.Raycast(Input.GetTouch(0).position, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
-                if (hits.Count > 0)
-                {
-                    GameObject.Instantiate(objectToPlace, hits[0].pose.position, hits[0].pose.rotation);
-                }
-            }
-            isSpawned = true;
-            cursorChildObject.SetActive(false);
-        }
-    }
+            Vector2 screenPosition = arCamera.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
+            var hits = new List<ARRaycastHit>();
+            raycastManager.Raycast(screenPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
 
-    void UpdateCursor()
-    {
-        Vector2 screenPosition = arCamera.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
-        List<ARRaycastHit> hits = new List<ARRaycastHit>();
-        raycastManager.Raycast(screenPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
-
-        if (hits.Count > 0)
-        {
-            transform.position = hits[0].pose.position;
-            transform.rotation = hits[0].pose.rotation;
+            if (hits.Count > 0)
+            {
+                transform.position = hits[0].pose.position;
+            }
         }
     }
 }

@@ -35,7 +35,6 @@ namespace Runtime.Planes
         {
             MovementStateMachine.CurrentState.HandleInput();
             MovementStateMachine.CurrentState.LogicUpdate();
-            Debug.Log(transform.position + "Plane");
         }
 
         private void FixedUpdate()

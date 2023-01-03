@@ -12,11 +12,6 @@ namespace Runtime.Routes
 
     public class Route : MonoBehaviour
     {
-        private void Start()
-        {
-            Debug.Log(gameObject.name + " " + transform.position);
-        }
-
         public LineRenderer myRoute;
         public bool isUsing = false;
         public int wheelContactIndex;
