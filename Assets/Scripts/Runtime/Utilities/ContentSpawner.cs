@@ -11,7 +11,7 @@ namespace Runtime.Utilities
         private void Update()
         {
             if (Input.touchCount <= 0 || isSpawned) return;
-            Instantiate(contentPrefab, Vector3.zero, quaternion.identity);
+            Instantiate(contentPrefab, new Vector3(2,1,-1), quaternion.identity);
             isSpawned = true;
         }
     }

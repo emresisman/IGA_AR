@@ -53,11 +53,11 @@ namespace Runtime.Planes.PlaneMovements
         {
             plane.transform.position = Vector3.MoveTowards(
                 plane.transform.position,
-                takeOffRoute.GetPosition(currentIndex + 1),
+                takeOffRoute.GetPosition(currentIndex + 1) + takeOffRoute.transform.position,
                 planeSpeed * Time.deltaTime
             );
 
-            if (plane.transform.position != takeOffRoute.GetPosition(currentIndex + 1)) return;
+            if (plane.transform.position != takeOffRoute.GetPosition(currentIndex + 1) + takeOffRoute.transform.position) return;
             
             currentIndex += 1;
             UpdateState();
@@ -66,14 +66,14 @@ namespace Runtime.Planes.PlaneMovements
         
         private void Rotate()
         {
-            var relative = plane.transform.InverseTransformPoint(takeOffRoute.GetPosition(currentIndex + 1));
+            var relative = plane.transform.InverseTransformPoint(takeOffRoute.GetPosition(currentIndex + 1) + takeOffRoute.transform.position);
             var angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg;
             plane.transform.Rotate(0, angle, 0);
         }
         
         private void SetStartPosition()
         {
-            plane.transform.position = takeOffRoute.GetPosition(currentIndex);
+            plane.transform.position = takeOffRoute.GetPosition(currentIndex) + takeOffRoute.transform.position;
         }
         
         private void SetStartSpeed()

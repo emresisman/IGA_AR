@@ -143,6 +143,7 @@ Library: lib_burst_generated64
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.RenderPipelines.Core.Runtime.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.Mathematics.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.XR.ARFoundation.dll
+--root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.XR.ARKit.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.XR.ARSubsystems.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.RenderPipelines.Universal.Runtime.dll
@@ -152,7 +153,6 @@ Library: lib_burst_generated64
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.Timeline.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.RenderPipeline.Universal.ShaderLibrary.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.Notifications.iOS.dll
---root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.XR.Management.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.Profiling.Core.dll
 --root-assembly=/Users/muhammedcosgun/Documents/GitHub/IGA_AR/Temp/StagingArea/Data/Managed/Unity.RenderPipelines.Core.ShaderLibrary.dll

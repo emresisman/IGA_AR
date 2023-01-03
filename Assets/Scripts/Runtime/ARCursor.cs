@@ -11,6 +11,7 @@ public class ARCursor : MonoBehaviour
     public Camera arCamera;
 
     public bool useCursor = true;
+    private bool isSpawned = false;
 
     void Start()
     {
@@ -19,6 +20,7 @@ public class ARCursor : MonoBehaviour
 
     void Update()
     {
+        if (isSpawned) return;
         if (useCursor)
         {
             UpdateCursor();
@@ -39,6 +41,8 @@ public class ARCursor : MonoBehaviour
                     GameObject.Instantiate(objectToPlace, hits[0].pose.position, hits[0].pose.rotation);
                 }
             }
+            isSpawned = true;
+            cursorChildObject.SetActive(false);
         }
     }
 
