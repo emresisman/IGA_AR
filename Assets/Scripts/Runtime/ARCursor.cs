@@ -6,10 +6,11 @@ namespace Runtime
 {
     public class ARCursor : MonoBehaviour
     {
-        public GameObject cursorChildObject;
-        public GameObject objectToPlace;
-        public ARRaycastManager raycastManager;
-        public Camera arCamera;
+        [SerializeField] private GameObject cursorChildObject;
+        [SerializeField] private GameObject objectToPlace;
+        [SerializeField] private ARRaycastManager raycastManager;
+        [SerializeField] private ARPlaneManager planeManager;
+        [SerializeField] private Camera arCamera;
     
         private bool isSpawned = false;
 
@@ -24,12 +25,12 @@ namespace Runtime
 
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
-
                 Instantiate(objectToPlace, transform.position, Quaternion.identity);
                 isSpawned = true;
                 cursorChildObject.SetActive(false);
+                planeManager.planePrefab.SetActive(false);
+                planeManager.enabled = false;
             }
-            
             UpdateCursor();
         }
 

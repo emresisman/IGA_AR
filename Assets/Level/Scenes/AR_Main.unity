@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 410087040}
-  m_IndirectSpecularColor: {r: 0.48981354, g: 0.57856596, b: 0.6793256, a: 1}
+  m_IndirectSpecularColor: {r: 0.49010125, g: 0.57825, b: 0.68288016, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -157,8 +157,8 @@ MonoBehaviour:
   objectToPlace: {fileID: 6205498231109765607, guid: 87c7a6e562915714184f000571d621b2,
     type: 3}
   raycastManager: {fileID: 352163179}
+  planeManager: {fileID: 352163180}
   arCamera: {fileID: 1179691315}
-  useCursor: 1
 --- !u!4 &272843607
 Transform:
   m_ObjectHideFlags: 0
