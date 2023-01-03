@@ -27,10 +27,10 @@ namespace Runtime.Utilities
         private void Start()
         {
             arrivalFlightsUri =
-                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&arr_iata=IST&airline_iata=TK&api_key=27e90cd5-96f3-4d00-a5c9-98edb2f9976b";
+                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&arr_iata=IST&airline_iata=TK&api_key=885fec56-bf01-4da1-82e6-37c2d475af02";
             
             departureFlightsUri =
-                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&dep_iata=IST&airline_iata=TK&api_key=27e90cd5-96f3-4d00-a5c9-98edb2f9976b";
+                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&dep_iata=IST&airline_iata=TK&api_key=885fec56-bf01-4da1-82e6-37c2d475af02";
             
             StartCoroutine(RequestLoop());
         }
@@ -145,7 +145,7 @@ namespace Runtime.Utilities
         private string GetFlightDetailsUri(string flight)
         {
             return "https://airlabs.co/api/v9/flight?flight_iata=" +
-                flight + "&api_key=27e90cd5-96f3-4d00-a5c9-98edb2f9976b";
+                flight + "&api_key=885fec56-bf01-4da1-82e6-37c2d475af02";
         }
 
         private void PullArrivalDetails()
