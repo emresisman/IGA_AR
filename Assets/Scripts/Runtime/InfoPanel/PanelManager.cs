@@ -7,6 +7,7 @@ namespace Runtime.InfoPanel
     public class PanelManager : Singleton<PanelManager>
     {
         private Camera mainCamera;
+        [SerializeField] private TerminalPanel terminal;
         [SerializeField] protected Animator infoPanelAnimator;
         [SerializeField] private GameObject turkishTechnicPanel;
         [SerializeField] private GameObject turkishCargoPanel;
@@ -37,6 +38,11 @@ namespace Runtime.InfoPanel
                 var panel = GetRaycastHitFromScreen(touch.position, interactableMask);
                 SwitchPanelActivity(panel);
             }
+        }
+
+        public void SetTerminalPanelText(string text)
+        {
+            terminal.SetText(text);
         }
 
         private InformationPanel GetRaycastHitFromScreen(Vector2 screenPosition, LayerMask layerMask)

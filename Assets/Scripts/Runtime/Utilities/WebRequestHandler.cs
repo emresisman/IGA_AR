@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using Data.Plane;
+using Runtime.InfoPanel;
 using Runtime.Planes;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -17,7 +18,7 @@ namespace Runtime.Utilities
     
     public class WebRequestHandler: MonoBehaviour
     {
-        private string arrivalFlightsUri, departureFlightsUri;
+        private string arrivalFlightsUri, departureFlightsUri, weatherUri;
         
         private readonly List<string> nearestArrivals = new List<string>();
         private readonly List<string> nearestDepartures = new List<string>();
@@ -31,8 +32,23 @@ namespace Runtime.Utilities
             
             departureFlightsUri =
                 "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&dep_iata=IST&airline_iata=TK&api_key=885fec56-bf01-4da1-82e6-37c2d475af02";
+
+            weatherUri = 
+                "https://api.checkwx.com/metar/LTFM?x-api-key=f51fb137414b429d821d160d0b";
             
             StartCoroutine(RequestLoop());
+            StartCoroutine(WeatherRequest());
+        }
+
+        private IEnumerator WeatherRequest()
+        {
+            using var webRequest = UnityWebRequest.Get(weatherUri);
+            
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success) yield break;
+            var weather = JsonSerializer.ConvertWeatherDataToObject(webRequest.downloadHandler.text);
+            PanelManager.Instance.SetTerminalPanelText(weather);
         }
 
         private IEnumerator RequestLoop()

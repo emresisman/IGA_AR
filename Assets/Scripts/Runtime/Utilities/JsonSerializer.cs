@@ -16,7 +16,7 @@ namespace Runtime.Utilities
         {
             return JsonUtility.FromJson<FlightObject>(json);
         }
-        
+
         public static List<RealTimeFlightResponse> ConvertResponseToObject(string text)
         {
             var data = DeserializeRealTimeFlightObject(text);
@@ -29,6 +29,13 @@ namespace Runtime.Utilities
             var data = DeserializeFlightObject(text);
             var flight = data.Response;
             return flight;
+        }
+
+        public static string ConvertWeatherDataToObject(string text)
+        {
+            var data = JsonUtility.FromJson<WeatherResponse>(text);
+            var weather = data.Data[0];
+            return weather;
         }
     }
 }
