@@ -25,7 +25,7 @@ namespace Runtime
 
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                Instantiate(objectToPlace, transform.position, Quaternion.identity);
+                Instantiate(objectToPlace, SpawnPosition(), Quaternion.identity);
                 isSpawned = true;
                 cursorChildObject.SetActive(false);
                 planeManager.planePrefab.SetActive(false);
@@ -44,6 +44,11 @@ namespace Runtime
             {
                 transform.position = hits[0].pose.position;
             }
+        }
+
+        private Vector3 SpawnPosition()
+        {
+            return transform.position + new Vector3(0, -1, 1); 
         }
     }
 }
