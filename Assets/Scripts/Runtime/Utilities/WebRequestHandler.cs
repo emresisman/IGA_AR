@@ -28,10 +28,10 @@ namespace Runtime.Utilities
         private void Start()
         {
             arrivalFlightsUri =
-                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&arr_iata=IST&airline_iata=TK&api_key=885fec56-bf01-4da1-82e6-37c2d475af02";
+                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&arr_iata=IST&airline_iata=TK&api_key=be7b3fae-2e7e-416d-b2e7-e2ec16f5e069";
             
             departureFlightsUri =
-                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&dep_iata=IST&airline_iata=TK&api_key=885fec56-bf01-4da1-82e6-37c2d475af02";
+                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&dep_iata=IST&airline_iata=TK&api_key=be7b3fae-2e7e-416d-b2e7-e2ec16f5e069";
 
             weatherUri = 
                 "https://api.checkwx.com/metar/LTFM?x-api-key=f51fb137414b429d821d160d0b";
@@ -161,7 +161,7 @@ namespace Runtime.Utilities
         private string GetFlightDetailsUri(string flight)
         {
             return "https://airlabs.co/api/v9/flight?flight_iata=" +
-                flight + "&api_key=885fec56-bf01-4da1-82e6-37c2d475af02";
+                flight + "&api_key=be7b3fae-2e7e-416d-b2e7-e2ec16f5e069";
         }
 
         private void PullArrivalDetails()
