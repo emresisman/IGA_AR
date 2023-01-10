@@ -18,7 +18,7 @@ namespace Runtime.Utilities
     
     public class WebRequestHandler: MonoBehaviour
     {
-        private string arrivalFlightsUri, departureFlightsUri, weatherUri;
+        private string arrivalFlightsUri, departureFlightsUri, weatherMetarUri, weatherTafUri;
         
         private readonly List<string> nearestArrivals = new List<string>();
         private readonly List<string> nearestDepartures = new List<string>();
@@ -33,8 +33,11 @@ namespace Runtime.Utilities
             departureFlightsUri =
                 "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&dep_iata=IST&airline_iata=TK&api_key=be7b3fae-2e7e-416d-b2e7-e2ec16f5e069";
 
-            weatherUri = 
+            weatherMetarUri = 
                 "https://api.checkwx.com/metar/LTFM?x-api-key=f51fb137414b429d821d160d0b";
+
+            weatherTafUri = 
+                "https://api.checkwx.com/taf/LTFM?x-api-key=f51fb137414b429d821d160d0b";
             
             StartCoroutine(RequestLoop());
             StartCoroutine(WeatherRequest());
@@ -42,13 +45,21 @@ namespace Runtime.Utilities
 
         private IEnumerator WeatherRequest()
         {
-            using var webRequest = UnityWebRequest.Get(weatherUri);
+            using var webRequestMetar = UnityWebRequest.Get(weatherMetarUri);
             
-            yield return webRequest.SendWebRequest();
+            yield return webRequestMetar.SendWebRequest();            
+            
+            using var webRequestTaf = UnityWebRequest.Get(weatherTafUri);
+            
+            yield return webRequestTaf.SendWebRequest();
 
-            if (webRequest.result != UnityWebRequest.Result.Success) yield break;
-            var weather = JsonSerializer.ConvertWeatherDataToObject(webRequest.downloadHandler.text);
-            PanelManager.Instance.SetTerminalPanelText(weather);
+            if (webRequestMetar.result != UnityWebRequest.Result.Success &&
+                webRequestTaf.result != UnityWebRequest.Result.Success) yield break;
+
+            var weatherMetar = JsonSerializer.ConvertWeatherDataToObject(webRequestMetar.downloadHandler.text);
+            var weatherTaf = JsonSerializer.ConvertWeatherDataToObject(webRequestTaf.downloadHandler.text);
+
+            PanelManager.Instance.SetWeatherPanelText(weatherMetar, weatherTaf);
         }
 
         private IEnumerator RequestLoop()

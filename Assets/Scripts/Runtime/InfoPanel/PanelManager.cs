@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Runtime.InfoPanel;
+using System.Collections.Generic;
 using UnityEngine;
 using Plane = Runtime.Planes.Plane;
 
@@ -7,7 +8,7 @@ namespace Runtime.InfoPanel
     public class PanelManager : Singleton<PanelManager>
     {
         private Camera mainCamera;
-        [SerializeField] private TerminalPanel terminal;
+        [SerializeField] private WeatherPanel weatherPanel;
         [SerializeField] protected Animator infoPanelAnimator;
         [SerializeField] private GameObject turkishTechnicPanel;
         [SerializeField] private GameObject turkishCargoPanel;
@@ -40,9 +41,9 @@ namespace Runtime.InfoPanel
             }
         }
 
-        public void SetTerminalPanelText(string text)
+        public void SetWeatherPanelText(string metar, string taf)
         {
-            terminal.SetText(text);
+            weatherPanel.SetWeatherText(metar,taf);
         }
 
         private InformationPanel GetRaycastHitFromScreen(Vector2 screenPosition, LayerMask layerMask)
