@@ -8,6 +8,7 @@ namespace Runtime.InfoPanel
     public class PanelManager : Singleton<PanelManager>
     {
         private Camera mainCamera;
+        [SerializeField] private TerminalPanel terminal;
         [SerializeField] private WeatherPanel weatherPanel;
         [SerializeField] protected Animator infoPanelAnimator;
         [SerializeField] private GameObject turkishTechnicPanel;
@@ -44,6 +45,16 @@ namespace Runtime.InfoPanel
         public void SetWeatherPanelText(string metar, string taf)
         {
             weatherPanel.SetWeatherText(metar,taf);
+        }
+
+        public void SetTerminalDepartures(string departure)
+        {
+            terminal.AddDepartures(departure);
+        }        
+
+        public void SetTerminalArrivals(string arrival)
+        {
+            terminal.AddArrivals(arrival);
         }
 
         private InformationPanel GetRaycastHitFromScreen(Vector2 screenPosition, LayerMask layerMask)

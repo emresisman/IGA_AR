@@ -1,5 +1,4 @@
-﻿using Data.Plane;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace Runtime.InfoPanel
@@ -7,11 +6,16 @@ namespace Runtime.InfoPanel
     public class TerminalPanel : MonoBehaviour
     {
         [SerializeField]
-        private TMP_Text weatherText;
+        private TMP_Text departuresText, arrivalsText;
 
-        public void SetText(string weather)
+        public void AddDepartures(string departure)
         {
-            weatherText.text = weather;
+            departuresText.text += departure + "\n";
+        }
+
+        public void AddArrivals(string arrival) 
+        {
+            arrivalsText.text += arrival + "\n";
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Data.Plane;
+using Runtime.InfoPanel;
 using Runtime.Utilities;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -38,6 +39,9 @@ namespace Runtime.Planes
                         component.SetFlight(planeResponse, FlightDirection.Arrival);
                         landedPlanes.Add(planeResponse.Flight_Iata);
                         onRouteLandingPlanes.Remove(planeResponse);
+
+                        var terminalEntry = planeResponse.Flight_Iata + " - " + planeResponse.Dep_Iata + " > " + planeResponse.Arr_Iata + " - " + planeResponse.Arr_Time_Utc + "UTC";
+                        PanelManager.Instance.SetTerminalArrivals(terminalEntry);
                     }
                 }
 
@@ -58,6 +62,9 @@ namespace Runtime.Planes
                         component.SetFlight(planeResponse, FlightDirection.Departure);
                         takeOffPlanes.Add(planeResponse.Flight_Iata);
                         onRouteTakeOffPlanes.Remove(planeResponse);
+
+                        var terminalEntry = planeResponse.Flight_Iata + " - " + planeResponse.Dep_Iata + " > " + planeResponse.Arr_Iata + " - " + planeResponse.Dep_Time_Utc + "UTC";
+                        PanelManager.Instance.SetTerminalDepartures(terminalEntry);
                     }
                 }
 
