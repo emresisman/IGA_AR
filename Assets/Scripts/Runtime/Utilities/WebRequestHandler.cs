@@ -19,6 +19,7 @@ namespace Runtime.Utilities
     public class WebRequestHandler: MonoBehaviour
     {
         private string arrivalFlightsUri, departureFlightsUri, weatherMetarUri, weatherTafUri;
+        private string airLabsApiKey, weatherApiKey;
         
         private readonly List<string> nearestArrivals = new List<string>();
         private readonly List<string> nearestDepartures = new List<string>();
@@ -27,17 +28,21 @@ namespace Runtime.Utilities
 
         private void Start()
         {
+            airLabsApiKey = "be7b3fae-2e7e-416d-b2e7-e2ec16f5e069";
+
+            weatherApiKey = "f51fb137414b429d821d160d0b";
+
             arrivalFlightsUri =
-                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&arr_iata=IST&airline_iata=TK&api_key=be7b3fae-2e7e-416d-b2e7-e2ec16f5e069";
+                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&arr_iata=IST&airline_iata=TK&api_key=" + airLabsApiKey;
             
             departureFlightsUri =
-                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&dep_iata=IST&airline_iata=TK&api_key=be7b3fae-2e7e-416d-b2e7-e2ec16f5e069";
+                "https://airlabs.co/api/v9/flights?_fields=flight_iata,alt&dep_iata=IST&airline_iata=TK&api_key=" + airLabsApiKey;
 
             weatherMetarUri = 
-                "https://api.checkwx.com/metar/LTFM?x-api-key=f51fb137414b429d821d160d0b";
+                "https://api.checkwx.com/metar/LTFM?x-api-key=" + weatherApiKey;
 
             weatherTafUri = 
-                "https://api.checkwx.com/taf/LTFM?x-api-key=f51fb137414b429d821d160d0b";
+                "https://api.checkwx.com/taf/LTFM?x-api-key=" + weatherApiKey;
             
             StartCoroutine(RequestLoop());
             StartCoroutine(WeatherRequest());
@@ -70,19 +75,16 @@ namespace Runtime.Utilities
 
                 StartCoroutine(GetNearestArrivals());
                 StartCoroutine(GetNearestDeparture());
-                Debug.Log("En yakın uçuşlar çekildi...");
                 yield return new WaitForSeconds(5);
                 
                 
                 PullArrivalDetails();
                 PullDepartureDetails();
-                Debug.Log("En yakın uçuşların detayları çekildi...");
                 yield return new WaitForSeconds(5);
                 
                 
                 SendArrivalToPlaneManager();
                 SendDepartureToPlaneManager();
-                Debug.Log("Uçuşlar PlaneManager'a gönderildi...");
                 yield return new WaitForSeconds(20);
             }
         }
@@ -123,18 +125,15 @@ namespace Runtime.Utilities
 
             if (webRequest.result != UnityWebRequest.Result.Success) yield break;
             var flight = JsonSerializer.ConvertFlightToObject(webRequest.downloadHandler.text);
-            Debug.Log("1000 matre altındaki uçuş : " + flight.Flight_Iata);
             switch (direction)
             {
                 case FlightDirection.Arrival:
                     if(!IsPlaneLanding(flight)) break;
                     nearestArrivalPlanes.Add(flight);
-                    Debug.Log("Geçerli iniş Yapan : " + flight.Flight_Iata);
                     break;
                 case FlightDirection.Departure:
                     if(!IsPlaneTakingOff(flight)) break;
                     nearestDeparturePlanes.Add(flight);
-                    Debug.Log("Geçerli kalkış Yapan : " + flight.Flight_Iata);
                     break;
             }
         }
@@ -142,6 +141,7 @@ namespace Runtime.Utilities
         private bool IsPlaneLanding(FlightResponse flight)
         {
             if (flight.Dep_Time_Utc == null) return false;
+
             var duration = flight.Duration;
             var depTime = flight.Dep_Time_Utc;
             var givenTime = DateTime.ParseExact(depTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
@@ -153,6 +153,7 @@ namespace Runtime.Utilities
         private bool IsPlaneTakingOff(FlightResponse flight)
         {
             if (flight.Dep_Time_Utc == null) return false;
+
             var duration = flight.Duration;
             var depTime = flight.Dep_Time_Utc;
             var givenTime = DateTime.ParseExact(depTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
@@ -171,8 +172,7 @@ namespace Runtime.Utilities
 
         private string GetFlightDetailsUri(string flight)
         {
-            return "https://airlabs.co/api/v9/flight?flight_iata=" +
-                flight + "&api_key=be7b3fae-2e7e-416d-b2e7-e2ec16f5e069";
+            return "https://airlabs.co/api/v9/flight?flight_iata=" + flight + "&api_key=" + airLabsApiKey;
         }
 
         private void PullArrivalDetails()
